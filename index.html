@@ -1,1 +1,165 @@
-# tet2026
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tết Vui</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:white;
+    overflow:hidden;
+    font-family:Arial;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+h1{
+    color:#d32f2f;
+    margin-top:40px;
+    text-align:center;
+}
+
+/* ===== BAO LÌ XÌ ===== */
+#lixi{
+    position:absolute;
+    width:130px;
+    cursor:pointer;
+}
+
+#lixi img{
+    width:100%;
+    pointer-events:none;
+}
+
+/* ===== HOA MAI ===== */
+.flower{
+    position:absolute;
+    top:-60px;
+    animation: fall linear forwards;
+}
+
+/* Cánh */
+.petal{
+    position:absolute;
+    width:18px;
+    height:26px;
+    background: radial-gradient(circle at 50% 30%, #fff59d 0%, #ffd600 50%, #f9a825 100%);
+    border-radius:50%;
+    transform-origin:50% 85%;
+}
+
+/* Nhụy */
+.center{
+    position:absolute;
+    width:10px;
+    height:10px;
+    background: radial-gradient(circle, #ff6f00, #e65100);
+    border-radius:50%;
+}
+
+/* Tia nhụy */
+.stamen{
+    position:absolute;
+    width:2px;
+    height:10px;
+    background:#ff3d00;
+    transform-origin:50% 0%;
+}
+
+@keyframes fall{
+    0%{
+        transform: translateY(0) rotate(0deg);
+    }
+    50%{
+        transform: translateY(50vh) translateX(15px) rotate(180deg);
+    }
+    100%{
+        transform: translateY(110vh) translateX(-15px) rotate(360deg);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧧 ẤN VÀO BAO LÌ XÌ ĐỂ NHẬN LỘC 🧧</h1>
+
+<div id="lixi">
+    <img src="lixi.png" alt="Bao lì xì">
+</div>
+
+<script>
+const lixi = document.getElementById("lixi");
+
+/* Đặt lì xì giữa màn hình */
+function centerLixi(){
+    lixi.style.left = (window.innerWidth - lixi.offsetWidth)/2 + "px";
+    lixi.style.top = (window.innerHeight - lixi.offsetHeight)/2 + "px";
+}
+window.onload = centerLixi;
+
+/* Di chuyển không vượt màn hình */
+function moveLixi(){
+    const maxX = window.innerWidth - lixi.offsetWidth;
+    const maxY = window.innerHeight - lixi.offsetHeight;
+
+    lixi.style.left = Math.random()*maxX + "px";
+    lixi.style.top = Math.random()*maxY + "px";
+}
+lixi.addEventListener("click", moveLixi);
+lixi.addEventListener("touchstart", moveLixi);
+
+/* Tạo hoa mai nhỏ hơn */
+function createFlower(){
+    const flower = document.createElement("div");
+    flower.className = "flower";
+
+    const size = 25 + Math.random()*20; // nhỏ lại
+    flower.style.width = size + "px";
+    flower.style.height = size + "px";
+
+    const maxX = window.innerWidth - size;
+    flower.style.left = Math.random()*maxX + "px";
+    flower.style.animationDuration = (5 + Math.random()*3) + "s";
+
+    // 5 cánh
+    for(let i=0;i<5;i++){
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.style.transform = `rotate(${i*72}deg)`;
+        petal.style.left = size/2 - 9 + "px";
+        petal.style.top = size/2 - 20 + "px";
+        flower.appendChild(petal);
+    }
+
+    // Nhụy giữa
+    const center = document.createElement("div");
+    center.className = "center";
+    center.style.left = size/2 - 5 + "px";
+    center.style.top = size/2 - 5 + "px";
+    flower.appendChild(center);
+
+    // Tia nhụy
+    for(let i=0;i<10;i++){
+        const stamen = document.createElement("div");
+        stamen.className = "stamen";
+        stamen.style.left = size/2 - 1 + "px";
+        stamen.style.top = size/2 - 5 + "px";
+        stamen.style.transform = `rotate(${i*36}deg)`;
+        flower.appendChild(stamen);
+    }
+
+    document.body.appendChild(flower);
+    setTimeout(()=>flower.remove(),8000);
+}
+
+setInterval(createFlower,600);
+</script>
+
+</body>
+  </html>
