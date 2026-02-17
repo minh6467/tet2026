@@ -27,13 +27,39 @@ h1{
 /* ===== BAO LÌ XÌ ===== */
 #lixi{
     position:absolute;
-    width:130px;
+    width:160px;
     cursor:pointer;
+    transition: all 0.2s ease;
 }
 
 #lixi img{
     width:100%;
     pointer-events:none;
+}
+
+/* ===== DÒNG CHỮ CHỈ HIỆN KHI NHẤN 5 LẦN ===== */
+#message-container{
+    position:absolute;
+    text-align:center;
+    display:none;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+#message{
+    font-size:2rem;
+    color:#d32f2f;
+}
+
+/* ===== DÒNG CHỮ LUÔN HIỆN Ở GÓC DƯỚI ===== */
+#message-sub{
+    position:fixed; /* luôn hiển thị */
+    bottom:10px;
+    width:100%;
+    text-align:center;
+    font-size:1rem;
+    color:#d32f2f;
 }
 
 /* ===== HOA MAI ===== */
@@ -93,8 +119,18 @@ h1{
     <img src="lixi.png" alt="Bao lì xì">
 </div>
 
+<!-- Dòng chữ hiện ra khi nhấn đủ 5 lần -->
+<div id="message-container">
+    <div id="message">🎉 Chúc mừng bạn nhận được lì xì từ DUC😎🤟 vjppro , vui lòng liên hệ zalo: 0378717580 để nhận thưởng 🎉</div>
+</div>
+
+<!-- Dòng chữ luôn hiển thị ở dưới -->
+<div id="message-sub">Phần thưởng dành cho những ai có kiên nhẫn</div>
+
 <script>
 const lixi = document.getElementById("lixi");
+const messageContainer = document.getElementById("message-container");
+let clickCount = 0;
 
 /* Đặt lì xì giữa màn hình */
 function centerLixi(){
@@ -110,7 +146,24 @@ function moveLixi(){
 
     lixi.style.left = Math.random()*maxX + "px";
     lixi.style.top = Math.random()*maxY + "px";
+    
+    clickCount++;
+
+    if(clickCount >=5){
+        // Ẩn bao lì xì, hiện thông báo
+        lixi.style.display = 'none';
+        messageContainer.style.display = 'block';
+        clickCount = 0; // reset
+
+        // 8 giây sau trở lại bao lì xì
+        setTimeout(()=>{
+            messageContainer.style.display = 'none';
+            lixi.style.display = 'block';
+            centerLixi();
+        },8000);
+    }
 }
+
 lixi.addEventListener("click", moveLixi);
 lixi.addEventListener("touchstart", moveLixi);
 
@@ -162,4 +215,4 @@ setInterval(createFlower,600);
 </script>
 
 </body>
-  </html>
+</html>
